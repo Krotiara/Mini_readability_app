@@ -25,12 +25,23 @@ class Test(unittest.TestCase):
     def test_html_tags_replacement(self):
         test_data = ['<p class="hqeiq">blablabla. <a href="/tags/organizations/mid/" target="_blank" '
                      'class="hqgaw">МИД России</a></p>']
-        replacement_result = self.html_text_parser.replace_html_tags(test_data)
-        self.assertEqual(replacement_result, ['blablabla. [/tags/organizations/mid/]'])
+        self.html_text_parser.replace_html_tags(test_data)
+        self.assertEqual(test_data, ['blablabla. [/tags/organizations/mid/]'])
 
 
-    def test_paragraph_offsets(self):
-        #test_data = ['<p>1</p>','<p>2</p>','<title>1</title>']
+    def test_paragraphs_offsets(self):
+        test_data = 'blabla blabl ablablabla blabla blablablab labla blablablabla\n' \
+                    'blablablab lablab lablablabl ablablablabl ablablablablabla blablablablablablablablab lablablablablab' \
+                    'lablablablablab lablablablab lablablablabla\nblablablab lablablablablablabl ablabla blablablablabla' \
+                    'blablablab lablablablablablabla\nblablablabl ablablabla blablablab lablablabl ablablablablablabla' \
+                    'blabl ablablab lablabla blablablablablablablablabl abl ablablablablablabl ablablabla blablablabla' \
+                    'bla bla blablablablablablabl ablablabl ablablabla blablabl abla\nbla'
+        test_widths = [30, 40, 50, 80]
+        for test_width in test_widths:
+            test_data = self.html_text_parser.adjust_text_by_width(test_data, test_width)
+            for line in test_data.split('\n'):
+                self.assertTrue(len(line) <= test_width)
+
         #test_text = self.html_text_parser.generate_text_by_data(test_data)
         #self.assertEqual(test_text,"<p>1</p>\n<p>2</p>\n<title>1</title>")
         pass
