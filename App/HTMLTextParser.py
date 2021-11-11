@@ -1,33 +1,39 @@
 import re
-import CustomExceptions
+import App.CustomExceptions
+import html
 
 
 class HTMLTextParser:
 
     def __init__(self):
         self._href_regex = re.compile(r'<a.*?>.*</a>')
+        self._image_regex = re.compile(r'<img.*?>')
         self._href_link_regex = re.compile(r'href=".*?"')
-        self._text_tags = [r'<p.*?>', r'</p>', r'<title>', 'r</title>']  # Нужен ленивый захват, иначе хапает всё
+        self._image_link_regex = re.compile(r'src=".*?"')
+        self._all_tags_regex = re.compile('|'.join([r'<.*?>.*</.*?>',r'<.*?>']))
+        self._replace_tags = [r'<p.*?>', r'</p>', r'<title>', r'</title>',
+                              r'<h\d.*?>', r'</h\d>', r'<span.*?>',
+                              r'</span>']  # Нужен ленивый захват, иначе хапает всё
         # до конца строки
-        self._regex_text_tags = re.compile('|'.join(self._text_tags))
+        self._regex_replace_tags = re.compile('|'.join(self._replace_tags))
         # Нужен ленивый захват, иначе хватает лишнее справа (в имени класса, например)
 
     def generate_readability_text(self, graped_html_text_data, text_width: int = 80):
         """graped_html_text_data - list of html strings."""
-        self.replace_html_tags(graped_html_text_data)
-        result_text = self.adjust_text_by_width("\n".join(graped_html_text_data), text_width)
+        raw_text = "\n\n".join(graped_html_text_data)  # отбивка новой строкой
+        text = self.replace_tags(raw_text)
+        text = html.unescape(self.__delete_tags_by_regex(text, self._regex_replace_tags))
+        text = self.__delete_tags_by_regex(text, self._all_tags_regex) #Очищаем случайно попавшие
+        # Если нельзя html.unescape, то определить словарь замен entities
+        result_text = self.adjust_text_by_width(text, text_width)
         return result_text
 
-        # 1) Замена ссылок done
-        # 2) Ширина не больше заданного параметра. Перенос по словам done
-        # 3) абзацы и заголовки отбиваются пустой строкой. (<p> и <title>) done
-        # 4) Остальные правила на ваше усмотрение.
-        pass
-
-    def replace_html_tags(self, html_text_data):
-        """html_text_data - list of html strings."""
-        for index, value in enumerate(html_text_data):
-            html_text_data[index] = self.__delete_text_tags(self.__replace_href(value))
+    def replace_tags(self,text):
+        text = self.__replace_tag_by_local_part(text, self._href_regex, self._href_link_regex, '[{}]',
+                                                ['href=', '"'])
+        text = self.__replace_tag_by_local_part(text, self._image_regex,self._image_link_regex, '[Source: {}]',
+                                                ['src=','"'])
+        return text
 
     def adjust_text_by_width(self, text, text_width: int = 80):
         generated_text = ''
@@ -45,11 +51,36 @@ class HTMLTextParser:
                     current_line_items.append(word)
                     current_width = len(word)
                     if current_width > text_width:
-                        raise CustomExceptions.TextWidthException(text_width)
+                        word_chunks = self.adjust_long_word(word, text_width)
+                        for chunck in word_chunks: #При очень длинном слове (ссылке) переносим его по длине
+                            generated_text += chunck
+                        current_line_items.clear()
+                        current_line_items.append(chunck[-1])
+                        current_width = len(chunck[-1])
+                        #raise App.CustomExceptions.TextWidthException(text_width, current_width,word)
             if len(current_line_items) > 0:
                 generated_text += " ".join(current_line_items)
             generated_text += '\n'  # Восстановление переноса, по которому сплитились
         return generated_text
+
+    def adjust_long_word(self, word, text_width): #Это не умный переносчик.
+        chunks = [word[i:i + text_width-1] for i in range(0, len(word), text_width-1)]
+        for i in range (0, len(chunks)-1):
+            chunks[i] = '{}-\n'.format(chunks[i])
+        return chunks
+
+#Переделать под универсальный?
+    def __replace_tag_by_local_part(self, text:str, regex, local_regex, replacement, replacement_empty):
+        for tag in re.findall(regex, text):
+            local_part = re.findall(local_regex, tag)
+            if len(local_part) > 0:
+                new_tag = replacement.format(*local_part)
+                for entry in replacement_empty:
+                    new_tag = new_tag.replace(entry,'')
+                text = text.replace(tag, new_tag)
+        return  text
+
+
 
     def __replace_href(self, text_entry):
         for href in re.findall(self._href_regex, text_entry):
@@ -60,5 +91,5 @@ class HTMLTextParser:
                 # может что получше придумать, а то каждый раз строка создается (неизменяемый тип)
         return text_entry
 
-    def __delete_text_tags(self, text_entry):
-        return re.sub(self._regex_text_tags, '', text_entry)
+    def __delete_tags_by_regex(self, text:str, regex):
+        return re.sub(regex,'',text)

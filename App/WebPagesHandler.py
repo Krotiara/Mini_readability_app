@@ -4,9 +4,12 @@ import re
 
 class WebPagesParser:
     def __init__(self):
-        self._regex_list = [r'<p.*?>.*?</p>', r'<title>.*?</title>']
+        self._regex_list = [r'<p.*?>.*?</p>', r'<title>.*?</title>', r'<h\d.*?>.*?</h\d>', r'<span.*?>.*?</span>']
 
         self._combined_text_regex = re.compile('|'.join(self._regex_list))
+
+    def get_html_data(self, url:str, regex=None):
+        return self.grap_needed_html_data(self.get_url_text(url), regex)
 
     def grap_needed_html_data(self, html_text, regex=None):
         if regex is None:
