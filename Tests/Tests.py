@@ -2,9 +2,10 @@ import unittest
 import sys
 import os
 
-sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.path.pardir))
+# sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.path.pardir))
 from App import WebPagesHandler as WPH
-from  App import  HTMLTextParser as HTP
+from App import HTMLTextParser as HTP
+from App import CustomExceptions as CE
 
 
 class Test(unittest.TestCase):
@@ -28,7 +29,6 @@ class Test(unittest.TestCase):
         self.html_text_parser.replace_html_tags(test_data)
         self.assertEqual(test_data, ['blablabla. [/tags/organizations/mid/]'])
 
-
     def test_paragraphs_offsets(self):
         test_data = 'blabla blabl ablablabla blabla blablablab labla blablablabla\n' \
                     'blablablab lablab lablablabl ablablablabl ablablablablabla blablablablablablablablab lablablablablab' \
@@ -42,9 +42,9 @@ class Test(unittest.TestCase):
             for line in test_data.split('\n'):
                 self.assertTrue(len(line) <= test_width)
 
-        #test_text = self.html_text_parser.generate_text_by_data(test_data)
-        #self.assertEqual(test_text,"<p>1</p>\n<p>2</p>\n<title>1</title>")
-        pass
+    def test_low_width_parapgraphs_offsets(self):
+        test_data = 'blabla blabl ablablabla blabla blablablab labla blablablabla\n'
+        self.assertRaises(CE.TextWidthException, self.html_text_parser.adjust_text_by_width(test_data, 5))
 
 
 if __name__ == '__main__':

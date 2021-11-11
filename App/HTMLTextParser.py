@@ -1,10 +1,11 @@
 import re
+import CustomExceptions
 
 
 class HTMLTextParser:
 
     def __init__(self):
-        self._href_regex = re.compile(r'<a.*>.*</a>')
+        self._href_regex = re.compile(r'<a.*?>.*</a>')
         self._href_link_regex = re.compile(r'href=".*?"')
         self._text_tags = [r'<p.*?>', r'</p>', r'<title>', 'r</title>']  # Нужен ленивый захват, иначе хапает всё
         # до конца строки
@@ -44,8 +45,7 @@ class HTMLTextParser:
                     current_line_items.append(word)
                     current_width = len(word)
                     if current_width > text_width:
-                        raise Exception("There are words in text which length is larger"
-                                        " than input text_width param = {}".format(text_width))
+                        raise CustomExceptions.TextWidthException(text_width)
             if len(current_line_items) > 0:
                 generated_text += " ".join(current_line_items)
             generated_text += '\n'  # Восстановление переноса, по которому сплитились
