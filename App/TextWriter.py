@@ -27,6 +27,7 @@ class TextWriter:
         file_path = '{}/{}'.format(file_path, file_name)
         with open(file_path, 'w+', encoding="utf-8") as file:
             file.write(text)
+        print('Success file writing. Path = {0}.'.format(file_path))
 
     def __get_text_path(self, folders_hierarchy):
         """Generate folders in url formats. Return path to last directory"""

@@ -21,8 +21,6 @@ class WebPagesParser:
         Output - list of founded tags strings"""
         self.set_regex_by_settings(tags_to_search)
         parsed_data = re.findall(self._combined_text_regex, html_text)
-        print(parsed_data[0])
-        print(parsed_data[1])
         return parsed_data
 
     def grap_needed_html_data_beautifulsoup(self, html_text: str, tags_to_search=None):
