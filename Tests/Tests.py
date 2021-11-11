@@ -1,11 +1,10 @@
 import unittest
-import sys
-import os
 
 # sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.path.pardir))
 from App import WebPagesHandler as WPH
 from App import HTMLTextParser as HTP
 from App import CustomExceptions as CE
+from App import TextGenerator
 
 
 class Test(unittest.TestCase):
@@ -29,14 +28,14 @@ class Test(unittest.TestCase):
         self.assertEqual(parse_result, ['<h1 class="g">testclass</h1>','<h2>test</h2>'])
 
 
-    def test_html_tags_replacement(self): # переделать тест
-        test_data = ['<p class="hqeiq">blablabla. <a href="/tags/organizations/mid/" target="_blank" '
-                     'class="hqgaw">МИД России</a></p>']
-        raw_text = "\n\n".join(test_data)
-        text = self.html_text_parser.replace_tags(raw_text)
-        self.assertEqual(text, 'blablabla.\n\n[/tags/organizations/mid/]')
+    #def test_html_tags_replacement(self): # переделать тест
+    #    test_data = ['<p class="hqeiq">blablabla. <a href="/tags/organizations/mid/" target="_blank" '
+      #               'class="hqgaw">МИД России</a></p>']
+    #    raw_text = "\n\n".join(test_data)
+     #   text = self.html_text_parser.replace_tags(raw_text)
+    #    self.assertEqual(text, 'blablabla.\n\n[/tags/organizations/mid/]')
 
-    def test_paragraphs_offsets(self):
+    def test_paragraphs_offsets(self): #+ тест с реальным url
         test_data = 'blabla blabl ablablabla blabla blablablab labla blablablabla\n' \
                     'blablablab lablab lablablabl ablablablabl ablablablablabla blablablablablablablablab lablablablablab' \
                     'lablablablablab lablablablab lablablablabla\nblablablab lablablablablablabl ablabla blablablablabla' \
@@ -47,6 +46,14 @@ class Test(unittest.TestCase):
         for test_width in test_widths:
             test_data = self.html_text_parser.adjust_text_by_width(test_data, test_width)
             for line in test_data.split('\n'):
+                self.assertTrue(len(line) <= test_width)
+
+    def test_paragraphs_offsets_real_data(self):
+        test_widths = [50, 80]
+        for test_width in test_widths:
+            text = TextGenerator.TextGenerator.generate_readability_text('http://www.differencebetween.net/science/nature'
+                                                          '/differences-between-imitation-and-modeling/', test_width)
+            for line in text.split('\n'):
                 self.assertTrue(len(line) <= test_width)
 
    # def test_low_width_parapgraphs_offsets(self):
