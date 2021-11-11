@@ -25,7 +25,7 @@ class Test(unittest.TestCase):
         parse_result = self.web_pages_handler.grap_needed_html_data(test_text)
         self.assertEqual(parse_result, ['<h1 class="g">testclass</h1>', '<h2>test</h2>'])
 
-    def test_links_tags_replacement(self):  # переделать тест
+    def test_links_tags_replacement(self):
         raw_text = '<p class="hqeiq">blablabla. <a href="/tags/organizations/mid/" target="_blank" class="hqgaw">МИД ' \
                    'России</a></p>'
         text = self.html_text_parser.replace_link_tags(raw_text)
