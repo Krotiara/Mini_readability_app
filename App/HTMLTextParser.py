@@ -14,17 +14,17 @@ class HTMLTextParser:
         self._all_tags_regex = re.compile('|'.join([r'<.*?>.*</.*?>', r'<.*?>']))
         self._replace_tags = [r'<p.*?>', r'</p>', r'<title>', r'</title>',
                               r'<h\d.*?>', r'</h\d>', r'<span.*?>',
-                              r'</span>', r'<div>', r'</div>', r'<b>', r'</b>']  # ????? ??????? ??????, ????? ?????? ??? ?? ????? ??????
-        # _replace_tags - ?? ??????? ???? ?????????. ??? ???????? ????? ? ???????? ?? ?????????, ? ????????? ???????
+                              r'</span>', r'<div>', r'</div>', r'<b>', r'</b>']  # Нужен ленивый захват, иначе хапает всё до конца строки
+        # _replace_tags - во внешний файл настройки. Или оставить здесь и выносить не регулярки, а текстовые пометки
         self._regex_replace_tags = re.compile('|'.join(self._replace_tags))
 
     def generate_readability_text(self, graped_html_text_data, text_width: int = 80):
         """graped_html_text_data - list of html tags strings."""
-        raw_text = "\n\n".join(graped_html_text_data)  # ??????? ????? ???????
+        raw_text = "\n\n".join(graped_html_text_data)  # отбивка новой строкой
         text = self.replace_link_tags(raw_text)
         text = html.unescape(self.__delete_tags_by_regex(text, self._regex_replace_tags))
-        text = self.__delete_tags_by_regex(text, self._all_tags_regex)  # ??????? ???????? ???????????? blacklist
-        # ???? ?????? html.unescape, ?? ?????????? ??????? ????? entities
+        text = self.__delete_tags_by_regex(text, self._all_tags_regex)  # Очищаем случайно проскочившие blacklist
+        # Если нельзя html.unescape, то определить словарь замен entities
         result_text = self.adjust_text_by_width(text, text_width)
         return result_text
 
@@ -41,7 +41,7 @@ class HTMLTextParser:
             current_width = 0
             current_line_items = []
             for word in line.split():
-                potential_width = len(word) + current_width + 1  # +1 - ???? ???????
+                potential_width = len(word) + current_width + 1  # +1 - учет пробела
                 if potential_width < text_width:
                     current_line_items.append(word)
                     current_width = potential_width
@@ -58,14 +58,14 @@ class HTMLTextParser:
                         # raise App.CustomExceptions.TextWidthException(text_width, current_width,word)
             if len(current_line_items) > 0:
                 generated_text += " ".join(current_line_items)
-            generated_text += '\n'  # ?????????????? ????????, ?? ???????? ??????????
+            generated_text += '\n'  # Восстановление переноса, по которому сплитились
         return generated_text
 
-    def adjust_long_word(self, word, text_width):  # ??? ?? ????? ??????????.
+    def adjust_long_word(self, word, text_width):  # Это не умный переносчик.
         chunks = [word[i:i + text_width] for i in range(0, len(word), text_width)]
         return chunks
 
-    # ?????? ????????
+    # Похоже намудрил
     def __replace_tag_by_local_part(self, text: str, regex, local_regex: str, replacement: str, replacement_empty):
         """replace html tags by its local part. Local part and tag are searching by regex and local_regex.
         replacement - string in format to use str.format func.
@@ -89,7 +89,7 @@ class HTMLTextParser:
         href = re.findall(self._href_link_regex, a_tag)[0]
         text = re.findall(self._href_text_regex, a_tag)[0]
         new_tag = '[{}] {}'.format(href, text)
-        new_tag = self.__replace_tags_stuff(['href=', '"'], new_tag) #??? ???? ???????
+        new_tag = self.__replace_tags_stuff(['href=', '"'], new_tag) #тут мини костыль
         return new_tag
 
     def __replace_image_link(self, img_tag: str):

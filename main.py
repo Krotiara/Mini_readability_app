@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+#coding:cp1252
 from App import TextGenerator
 import argparse
 import os

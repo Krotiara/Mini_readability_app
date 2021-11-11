@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 class WebPagesParser:
     def __init__(self):
-        # + ~ ?? ????? ?????? body ? ?????
+        # + ~ не берем пустые body в тэгах
         self._regex_tag_dict = {'p': r'<p.*?>.+?</p>', 'title': r'<title>.+?</title>', 'h': r'<h\d.*?>.+?</h\d>',
                                 'span': r'<span.*?>.+?</span>', 'img': r'<img.*?>', 'a': r'<a.*?>.*</a>',
                                 'div': r'<div>.+?</div>'}
@@ -56,7 +56,6 @@ class WebPagesParser:
     def get_url_text(url):
         try:
             responce = requests.get(url)
-            responce.encoding = 'utf-8'
             return responce.text
         except requests.ConnectionError as e:
-            print(e)  # ???????? ?? ???????????
+            print(e)  # заменить на уведомление
