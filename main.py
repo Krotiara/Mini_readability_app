@@ -12,7 +12,7 @@ if __name__ == '__main__':
     # 'http://www.differencebetween.net/science/nature/differences-between-imitation-and-modeling/' - big ссылка
     # трэш с https://pythonworld.ru/osnovy/dekoratory.html
     # https://forums.playground.ru/forza_horizon_5/vpechatleniya_ot_igry-1007420/ - все в div - на будущее
-    TextGenerator.generate_readability_text('http://www.differencebetween.net/science/nature/differences-between-imitation-and-modeling/', 80)
+    TextGenerator.TextGenerator.generate_readability_text('http://www.differencebetween.net/science/nature/differences-between-imitation-and-modeling/', 80)
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
