@@ -12,7 +12,9 @@ class WebPagesParser:
     def get_html_data(self, url:str, regex=None):
         return self.grap_needed_html_data(self.get_url_text(url), regex)
 
-    def grap_needed_html_data(self, html_text, regex=None):
+    def grap_needed_html_data(self, html_text:str, regex=None):
+        """Grap data by regex patterns. (Without Beautiful Soup).
+        Output - list of founded tags strings"""
         if regex is None:
             regex = self._combined_text_regex
         parsed_data = re.findall(regex, html_text)

@@ -12,6 +12,9 @@ class TextWriter:
             os.makedirs(folder)
 
     def write_by_url_format(self, text, url: str):
+        """Write text by url:
+        http://lenta.ru/news/2013/03/dtp/index.html => Texts/lenta.ru/news/2013/03/dtp/index.txt.
+        If there is no extention in url name of output file will be random"""
         url = url.replace('http://', '').replace('https://', '')
         split = url.split('/')
         if self.__is_file_name_exist(split):
@@ -21,10 +24,11 @@ class TextWriter:
             file_name = '{}.txt'.format(randint(0, 100))
             file_path = self.__get_text_path(split)
         file_path = '{}/{}'.format(file_path, file_name)
-        with open(file_path, 'w+',encoding="utf-8") as file:
+        with open(file_path, 'w+', encoding="utf-8") as file:
             file.write(text)
 
     def __get_text_path(self, folders_hierarchy):
+        """Generate folders in url formats. Return path to last directory"""
         current_path = self.texts_dir
         for folder in folders_hierarchy:
             new_path = '{}/{}'.format(current_path, folder)
