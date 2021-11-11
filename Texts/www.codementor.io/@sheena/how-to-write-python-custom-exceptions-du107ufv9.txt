@@ -1,0 +1,147 @@
+This tutorial will go through the "what" and "why" of exceptions in Python,
+and then walk you through the process of creating and using your own types of
+exceptions. And more importantly, when not to. Enjoy!
+
+If you have been coding in Python for any length of time, no doubt you have
+seen a traceback. Just in case you haven't, here we'll make one happen. You can
+open up a Python console and type in the statements that follow, or just read
+along:
+
+So here is what we just did. In line 1 we made a list with three elements in
+it. Line 2 tries to access the element at the index gets raised and but does
+not get caught (we'll get to that later), then it ends up printing a traceback
+to the error output. In the case of the Python console, the error output is
+just the console. A traceback message gives some information about the actual
+error and gives some detail about how we got to the point where the error
+actually happened. If this last sentence was confusing don't worry, it should
+become clear with the next example.
+
+The and printing an appropriate traceback.
+
+Finally, we do something sensible and access .
+
+Great. So what have we learned?
+
+Python uses Exceptions to tell on bad code. Exceptions are raised when
+something doesn't work according to plan, where the program cannot proceed. And
+there are different types of exceptions for different situations.
+
+Here's a more interesting example, just to demonstrate a bit more about the
+traceback and why this exception is cool as well:
+
+So far nothing amazing has happened in the code above. We made three functions
+such that . Now let's do something with them:
+
+Here we meet the . Pretty straight-forward. As a side note, assertion
+statements like the one above are pretty useful for 'sanity checking' while
+running code.
+
+This time the traceback is a little longer. From this traceback, you can see
+that the . It even has line numbers. The line numbers aren't too useful right
+now because we are just entering things into the console. However, writing and
+executing complex Python programs entirely in the console is not common
+practice; usually you'll be calling functions that are stored in files. If such
+a function raises an Exception, then the traceback will help you find exactly
+what line of what file raised the error.
+
+This time we are calling because those functions had already executed without
+error.
+
+This time we execute . The traceback describes the process flow.
+
+If you are having any trouble understanding how the program flow can be
+determined from a traceback message, then it will likely be worth your while to
+do some reading about 'call stacks'.
+
+The power of exceptions is that we can write code to react to them. To do
+this, we catch exceptions. Continuing from our previous code:
+
+Aaaand nothing happens. Great, there was no exception.
+
+This time there was one and we caught the bugger. Whatever you put inside an
+block will only execute if it catches an exception. But there's more to it than
+that:
+
+The block gets executed no matter what.
+
+But . The reason we have different types of exceptions is because we might
+want to react to them differently.
+
+For example:
+
+Whenever we call (B), etc.
+
+Note that that means that the order of the to look like this:
+
+A good rule of thumb is to .
+
+You can explicitly raise Exceptions in two ways (making an error in your code
+is more of an implicit method).
+
+The first way is to reraise an exception you caught. For example:
+
+Or, you can construct an object and raise it yourself. Since Exceptions have
+different types, they sometimes expect different arguments. Here's a really
+basic example:
+
+Try to greet a few people and see what happens.
+
+Since Exceptions are objects and can be constructed, it makes sense that we
+can subclass the class.
+
+Now you can .
+
+So that is simple enough. But why would you want to do that? Well, best
+practice is really to avoid doing that sort of thing. modern versions of Python
+have a rich set of Exceptions already, so it often isn't worth creating more
+stuff. If you wanted to create would do the trick. If it won't do the trick,
+then it's possibly worthwhile.
+
+For example, if the context in which the exception was raised is extra
+meaningful, then it might be worth storing that context in the Exception:
+
+A lot of the time, the context of an exception is simple enough that it can be
+passed as a message to one of the built-in to access a specific URL it may just
+succeed, but if it doesn't, then it tries to give you as much information as
+possible to debug the problem. For example, it generates different kinds
+exceptions for a timeouts and 404s.
+
+Sometimes you want an Exception that is very much like one of the built-in
+exceptions in every way, but it has some pre-determined message. Like so:
+
+Every time you raise an doesn't matter much─what we care about is the message.
+
+This is more easily and neatly achieved by just constructing a suitable
+exception beforehand and raising it when you need to:
+
+The thing to note here is that an Exception doesn't need to be raised as soon
+as it is constructed. And when in doubt, KISS (tupid).
+
+We've covered a lot of ground here, specifically what exceptions do and how
+and when to catch them; how to make them happen and how to make your own
+exception classes. We also covered quite a bit of good practice regarding
+exceptions. Here's a little summary:
+
+That's all folks.
+
+Enjoy this post? Give a like if it's helpful.
+
+Leave a like and comment for
+
+Thanks for this tutorial. It was easy to understand :)
+
+Thanks a bunch! Nice examples, easy to understand.
+
+Hi Sheena, I think you have a great article for the beginner programmer here
+learning about exceptions!
+
+There are two changes I would recommend. The first is to never have a blank
+
+The second is in reference in your conclusion that “don’t make new exception
+classes when the built-in ones have all the functionality you need” is
+ill-advisable. It’s best to create custom errors to your program, especially if
+it’s a library others will be using. This is where good subclass hierarchy will
+come into play, where you should have a base exception that anything else
+builds off of. Then children exceptions can also be subclassed of a
+corresponding builtin as well, so it could be caught with either your custom
+exception or the builtin.

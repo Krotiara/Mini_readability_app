@@ -21,7 +21,7 @@ if __name__ == '__main__':
     parser.add_argument('--settings', '-s', help="parser settings file", type=str)
     parser.add_argument('--text_width', '-w', help="parser line width", type=int)
     args = parser.parse_args()
-    tags_to_search = ['title', 'p', 'h', 'span']
+    tags_to_search = ['title', 'p', 'h']
     text_width = 80
     if args.settings is not None:
         settings_dict = read_settings(args.settings)

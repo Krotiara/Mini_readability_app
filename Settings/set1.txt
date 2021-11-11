@@ -1,2 +1,2 @@
 text_width=80
-searching_tags=p,h,title,span
+searching_tags=p,h,title

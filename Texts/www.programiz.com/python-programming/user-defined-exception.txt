@@ -1,0 +1,94 @@
+In this tutorial, you will learn how to define custom exceptions depending
+upon your requirements with the help of examples.
+
+Python has numerous [/python-programming/exceptions] >built-in exceptions that
+force your program to output an error when something in the program goes wrong.
+
+However, sometimes you may need to create your own custom exceptions that
+serve your purpose.
+
+In Python, users can define custom exceptions by creating a new class. This
+exception class has to be derived, either directly or indirectly, from the
+built-in class. Most of the built-in exceptions are also derived from this
+class.
+
+Here, we have created a user-defined exception called statement with an
+optional error message.
+
+When we are developing a large Python program, it is a good practice to place
+all the user-defined exceptions that our program raises in a separate file.
+Many standard modules do this. They define their exceptions separately as
+(generally but not always).
+
+User-defined exception class can implement everything a normal class can do,
+but we generally make them simple and concise. Most implementations declare a
+custom base class and derive others exception classes from this base class.
+This concept is made clearer in the following example.
+
+In this example, we will illustrate how user-defined exceptions can be used in
+a program to raise and catch errors.
+
+This program will ask the user to enter a number until they guess a stored
+number correctly. To help them figure it out, a hint is provided whether their
+guess is greater than or less than the stored number.
+
+Here is a sample run of this program.
+
+We have defined a base class called .
+
+The other two exceptions () that are actually raised by our program are
+derived from this class. This is the standard way to define user-defined
+exceptions in Python programming, but you are not limited to this way only.
+
+We can further customize this class to accept other arguments as per our
+needs.
+
+To learn about customizing the Exception classes, you need to have the basic
+knowledge of Object-Oriented programming.
+
+Visit [/python-programming/object-oriented-programming] >Python Object
+Oriented Programming to start learning about Object-Oriented programming in
+Python.
+
+
+
+Let's look at one example:
+
+
+
+Here, we have overridden the constructor of the .
+
+The custom attribute is defined to be used later.
+
+The inherited is raised.
+
+We can also customize the method itself by overriding it.
+
+
+
+To learn more about how you can handle exceptions in Python, visit
+[/python-programming/exception-handling] >Python Exception Handling.
+
+Sorry about that.
+
+Python Tutorial
+
+Python Exception Handling Using try, except and finally statement
+
+Python Tutorial
+
+Python Errors and Built-in Exceptions
+
+Python Library
+
+Python Dictionary get()
+
+Python Library
+
+Python List sort()
+
+Get App
+
+Get Python App
+
+© Parewa Labs Pvt. Ltd. All rights reserved.

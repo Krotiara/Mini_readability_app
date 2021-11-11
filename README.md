@@ -18,8 +18,9 @@
    Приоритет у ключа -w больше, чем у записи параметра ширины в файле настроек.
 
 Для запуска программы необходимо в командной строке написать следующее:
-python main.py -url url_address и опционально указать ключи -w и -s. Если не указывать, будут использоваться значения
-по-умолчанию: ширина текста=80, тэги=p,title,h,span,img.
+python main.py -url url_address и опционально указать ключи -w и -s. 
+(или из папки dist - python main.exe -url url_address и опционально указать ключи -w и -s. ).
+Если параметры не указывать, будут использоваться значения по-умолчанию: ширина текста=80, тэги=p,title,h.
 
 Результат работы программы - созданный текстовый файл, который автоматически помещается в папку согласно url-шаблону:
 http://lenta.ru/news/2013/03/dtp/index.html => [Texts]/lenta.ru/news/2013/03/dtp/index.txt
@@ -39,7 +40,13 @@ term-content-sharing-partnership содержится в div блоках.
 https://www.codementor.io/@sheena/how-to-write-python-custom-exceptions-du107ufv9
 https://www.programiz.com/python-programming/user-defined-exception
 https://www.gazeta.ru/politics/2021/11/10_a_14189233.shtml
-http://www.differencebetween.net/science/nature/differences-between-imitation-and-modeling/
+https://www.vesti.ru/article/2638020 
+https://www.gazeta.ru/politics/news/2021/11/11/n_16838245.shtml
+https://www.gazeta.ru/social/2021/11/10/14190157.shtml
+https://www.gazeta.ru/social/news/2021/11/11/n_16838527.shtml
+https://lenta.ru/news/2021/11/11/vzdutie/
 
-P.S. Парсинг html сделан без Beautiful Soup в силу ограничения в тз: "Не должно использоваться
-сторонних библиотек, впрямую решающих задачу."
+P.S. Результаты обработки верхних ссылок уже находятся в папке Texts.
+
+P.S. 2 варианта парсина html: без Beautiful Soup и с ним. Без ~ появился в силу ограничения в тз: "Не должно
+использоваться сторонних библиотек, впрямую решающих задачу.", но после было получено разъяснение, что можно пользоваться.
