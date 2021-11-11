@@ -47,14 +47,14 @@ term-content-sharing-partnership содержится в div блоках.
 
    
 Тестируемые URL:
-https://www.codementor.io/@sheena/how-to-write-python-custom-exceptions-du107ufv9
-https://www.programiz.com/python-programming/user-defined-exception
-https://www.gazeta.ru/politics/2021/11/10_a_14189233.shtml
-https://www.vesti.ru/article/2638020 
-https://www.gazeta.ru/politics/news/2021/11/11/n_16838245.shtml
-https://www.gazeta.ru/social/2021/11/10/14190157.shtml
-https://www.gazeta.ru/social/news/2021/11/11/n_16838527.shtml
-https://lenta.ru/news/2021/11/11/vzdutie/
+1) https://www.codementor.io/@sheena/how-to-write-python-custom-exceptions-du107ufv9
+2) https://www.programiz.com/python-programming/user-defined-exception
+3) https://www.gazeta.ru/politics/2021/11/10_a_14189233.shtml
+4) https://www.vesti.ru/article/2638020 
+5) https://www.gazeta.ru/politics/news/2021/11/11/n_16838245.shtml
+6) https://www.gazeta.ru/social/2021/11/10/14190157.shtml
+7) https://www.gazeta.ru/social/news/2021/11/11/n_16838527.shtml
+8) https://lenta.ru/news/2021/11/11/vzdutie/
 
 P.S. Результаты обработки верхних ссылок уже находятся в папке Texts.
 
