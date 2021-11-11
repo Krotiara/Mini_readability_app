@@ -4,7 +4,8 @@ import re
 
 class WebPagesParser:
     def __init__(self):
-        self._regex_list = [r'<p.*?>.*?</p>', r'<title>.*?</title>', r'<h\d.*?>.*?</h\d>', r'<span.*?>.*?</span>']
+        self._regex_list = [r'<p.*?>.+?</p>', r'<title>.+?</title>', r'<h\d.*?>.+?</h\d>', r'<span.*?>.+?</span>']
+        # + ~ не берем пустые body в тэгах
 
         self._combined_text_regex = re.compile('|'.join(self._regex_list))
 
