@@ -52,11 +52,9 @@ class HTMLTextParser:
                     current_width = len(word)
                     if current_width > text_width:
                         word_chunks = self.adjust_long_word(word, text_width)
-                        for chunck in word_chunks: #При очень длинном слове (ссылке) переносим его по длине
-                            generated_text += chunck
+                        generated_text += "\n".join(word_chunks)
                         current_line_items.clear()
-                        current_line_items.append(chunck[-1])
-                        current_width = len(chunck[-1])
+                        current_width = len(word_chunks[-1])
                         #raise App.CustomExceptions.TextWidthException(text_width, current_width,word)
             if len(current_line_items) > 0:
                 generated_text += " ".join(current_line_items)
@@ -64,9 +62,7 @@ class HTMLTextParser:
         return generated_text
 
     def adjust_long_word(self, word, text_width): #Это не умный переносчик.
-        chunks = [word[i:i + text_width-1] for i in range(0, len(word), text_width-1)]
-        for i in range (0, len(chunks)-1):
-            chunks[i] = '{}-\n'.format(chunks[i])
+        chunks = [word[i:i + text_width] for i in range(0, len(word), text_width)]
         return chunks
 
 #Переделать под универсальный?
