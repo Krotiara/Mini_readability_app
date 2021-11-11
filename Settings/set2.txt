@@ -1,0 +1,2 @@
+text_width=30
+searching_tags=h,title

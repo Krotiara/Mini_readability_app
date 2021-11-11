@@ -1,6 +1,7 @@
 import os
 from random import randint
 
+
 class TextWriter:
     def __init__(self):
         self.current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -14,14 +15,14 @@ class TextWriter:
     def write_by_url_format(self, text, url: str):
         """Write text by url:
         http://lenta.ru/news/2013/03/dtp/index.html => Texts/lenta.ru/news/2013/03/dtp/index.txt.
-        If there is no extention in url name of output file will be random"""
+        If there is no extension in url name of output file will be last line in the url"""
         url = url.replace('http://', '').replace('https://', '')
         split = url.split('/')
         if self.__is_file_name_exist(split):
             file_name = '{}.txt'.format(os.path.splitext(split[-1])[0])
             file_path = self.__get_text_path(split[:-1])
         else:
-            file_name = '{}.txt'.format(randint(0, 100))
+            file_name = '{}.txt'.format('_'.join(split[-2:]))
             file_path = self.__get_text_path(split)
         file_path = '{}/{}'.format(file_path, file_name)
         with open(file_path, 'w+', encoding="utf-8") as file:

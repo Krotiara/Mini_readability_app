@@ -10,24 +10,25 @@ class HTMLTextParser:
         self._image_regex = re.compile(r'<img.*?>')
         self._href_link_regex = re.compile(r'href=".*?"')
         self._image_link_regex = re.compile(r'src=".*?"')
-        self._all_tags_regex = re.compile('|'.join([r'<.*?>.*</.*?>',r'<.*?>']))
+        self._all_tags_regex = re.compile('|'.join([r'<.*?>.*</.*?>', r'<.*?>']))
         self._replace_tags = [r'<p.*?>', r'</p>', r'<title>', r'</title>',
                               r'<h\d.*?>', r'</h\d>', r'<span.*?>',
                               r'</span>']  # Нужен ленивый захват, иначе хапает всё до конца строки
+        # _replace_tags - во внешний файл настройки. Или оставить здесь и выносить не регулярки, а текстовые пометки
         self._regex_replace_tags = re.compile('|'.join(self._replace_tags))
         # Нужен ленивый захват, иначе хватает лишнее справа (в имени класса, например)
 
     def generate_readability_text(self, graped_html_text_data, text_width: int = 80):
         """graped_html_text_data - list of html tags strings."""
         raw_text = "\n\n".join(graped_html_text_data)  # отбивка новой строкой
-        text = self.replace_tags(raw_text)
+        text = self.replace_link_tags(raw_text)
         text = html.unescape(self.__delete_tags_by_regex(text, self._regex_replace_tags))
         text = self.__delete_tags_by_regex(text, self._all_tags_regex) #Очищаем случайно попавшие
         # Если нельзя html.unescape, то определить словарь замен entities
         result_text = self.adjust_text_by_width(text, text_width)
         return result_text
 
-    def replace_tags(self, text):
+    def replace_link_tags(self, text):
         text = self.__replace_tag_by_local_part(text, self._href_regex, self._href_link_regex, '[{}]',
                                                 ['href=', '"'])
         text = self.__replace_tag_by_local_part(text, self._image_regex,self._image_link_regex, '[Source: {}]',
@@ -53,7 +54,7 @@ class HTMLTextParser:
                     current_width = len(word)
                     if current_width > text_width:
                         word_chunks = self.adjust_long_word(word, text_width)
-                        generated_text += "\n".join(word_chunks)
+                        generated_text += "\n".join(word_chunks) + " "
                         current_line_items.clear()
                         current_width = len(word_chunks[-1])
                         #raise App.CustomExceptions.TextWidthException(text_width, current_width,word)

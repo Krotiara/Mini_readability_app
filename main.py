@@ -1,18 +1,32 @@
 from App import TextGenerator
+import argparse
+import os
 
 
+def read_settings(settings_file_name):
+    settings_dict = {}
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+    path = '{}/Settings/{}'.format(current_dir, settings_file_name)
+    with open(path, 'r', encoding='utf-8') as settings:
+        for line in settings:
+            (key, val) = line.split('=')
+            settings_dict[key] = val
+    return settings_dict
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    #https://www.codementor.io/@sheena/how-to-write-python-custom-exceptions-du107ufv9
-    #https://www.programiz.com/python-programming/user-defined-exception
-    #https://www.gazeta.ru/politics/2021/11/10_a_14189233.shtml - не заменилась одна <a> и нужно обработку картинок сделать
-    # 'https://www.gazeta.ru/politics/2021/11/10_a_14189233.shtml' - не заменилась одна <a>
-    # 'http://www.differencebetween.net/science/nature/differences-between-imitation-and-modeling/' - big ссылка
-    # трэш с https://pythonworld.ru/osnovy/dekoratory.html
-    # https://forums.playground.ru/forza_horizon_5/vpechatleniya_ot_igry-1007420/ - все в div - на будущее
-    TextGenerator.TextGenerator.generate_readability_text('http://www.differencebetween.net/science/nature/differences-between-imitation-and-modeling/', 80)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--article_url', '-url', help="URL address of article", type=str)
+    parser.add_argument('--settings', '-s', help="parser settings file", type=str)
+    parser.add_argument('--text_width', '-w', help="parser line width", type=int)
+    args = parser.parse_args()
+    tags_to_search = ['a', 'img', 'p', 'h', 'span']
+    text_width = 80
+    if args.settings is not None:
+        settings_dict = read_settings(args.settings)
+        tags_to_search = settings_dict['searching_tags'].split(',')
+        text_width = int(settings_dict['text_width'])
+    if args.text_width is not None:
+        text_width = int(args.text_width)
+    TextGenerator.TextGenerator.generate_readability_text(args.article_url, text_width, tags_to_search)
 
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
