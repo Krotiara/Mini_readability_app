@@ -6,7 +6,7 @@ class WebPagesParser:
     def __init__(self):
         # + ~ не берем пустые body в тэгах
         self._regex_tag_dict = {'p': r'<p.*?>.+?</p>', 'title': r'<title>.+?</title>', 'h': r'<h\d.*?>.+?</h\d>',
-                                'span': r'<span.*?>.+?</span>', 'img': r'<img.*?>'}
+                                'span': r'<span.*?>.+?</span>', 'img': r'<img.*?>', 'a': r'<a.*?>.*</a>'}
         self._combined_text_regex = re.compile('|'.join(self._regex_tag_dict.values()))
 
     def get_html_data(self, url: str, tags_to_search=None):
@@ -18,6 +18,7 @@ class WebPagesParser:
         Output - list of founded tags strings"""
         self.set_regex_by_settings(tags_to_search)
         parsed_data = re.findall(self._combined_text_regex, html_text)
+        print(parsed_data)
         return parsed_data
 
     def set_regex_by_settings(self, tags_to_search): #Обработка исключения

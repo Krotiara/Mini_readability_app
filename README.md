@@ -1,5 +1,6 @@
 # Mini_readability_app
-Загрузчик полезной информации с веб-страницы.
+Загрузчик полезной информации с веб-страницы. По входной url ссылке на статью выгружает и обрабатывает с веб-страницы
+поля, указанные в настройках.
 
 Руководство запуска:
 Ключи:
@@ -39,3 +40,6 @@ https://www.codementor.io/@sheena/how-to-write-python-custom-exceptions-du107ufv
 https://www.programiz.com/python-programming/user-defined-exception
 https://www.gazeta.ru/politics/2021/11/10_a_14189233.shtml
 http://www.differencebetween.net/science/nature/differences-between-imitation-and-modeling/
+
+P.S. Парсинг html сделан без Beautiful Soup в силу ограничения в тз: "Не должно использоваться
+сторонних библиотек, впрямую решающих задачу."

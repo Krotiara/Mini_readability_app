@@ -16,7 +16,6 @@ class HTMLTextParser:
                               r'</span>']  # Нужен ленивый захват, иначе хапает всё до конца строки
         # _replace_tags - во внешний файл настройки. Или оставить здесь и выносить не регулярки, а текстовые пометки
         self._regex_replace_tags = re.compile('|'.join(self._replace_tags))
-        # Нужен ленивый захват, иначе хватает лишнее справа (в имени класса, например)
 
     def generate_readability_text(self, graped_html_text_data, text_width: int = 80):
         """graped_html_text_data - list of html tags strings."""
