@@ -13,8 +13,10 @@ class TextWriter:
 
     def write_by_url_format(self, text, url: str):
         """Write text by url:
-        http://lenta.ru/news/2013/03/dtp/index.html => Texts/lenta.ru/news/2013/03/dtp/index.txt.
-        If there is no extension in url name of output file will be last line in the url"""
+        http://lenta.ru/news/2013/03/dtp/index.html =>
+         Texts/lenta.ru/news/2013/03/dtp/index.txt.
+        If there is no extension in url name of output file will be last line
+        in the url"""
         url = url.replace('http://', '').replace('https://', '')
         split = url.split('/')
         if self.__is_file_name_exist(split):

@@ -6,14 +6,18 @@ from bs4 import BeautifulSoup
 class WebPagesParser:
     def __init__(self):
         # + ~ не берем пустые body в тэгах
-        self._regex_tag_dict = {'p': r'<p.*?>.+?</p>', 'title': r'<title>.+?</title>', 'h': r'<h\d.*?>.+?</h\d>',
-                                'span': r'<span.*?>.+?</span>', 'img': r'<img.*?>', 'a': r'<a.*?>.*</a>',
+        self._regex_tag_dict = {'p': r'<p.*?>.+?</p>',
+                                'title': r'<title>.+?</title>',
+                                'h': r'<h\d.*?>.+?</h\d>',
+                                'span': r'<span.*?>.+?</span>',
+                                'img': r'<img.*?>', 'a': r'<a.*?>.*</a>',
                                 'div': r'<div>.+?</div>'}
-        self._combined_text_regex = re.compile('|'.join(self._regex_tag_dict.values()))
+        self._combined_text_regex =\
+            re.compile('|'.join(self._regex_tag_dict.values()))
 
     def get_html_data(self, url: str, tags_to_search=None):
-        # return self.grap_needed_html_data(self.get_url_text(url),tags_to_search)
-        return self.grap_needed_html_data_beautifulsoup(self.get_url_text(url), tags_to_search)
+        return self.grap_needed_html_data_beautifulsoup(
+            self.get_url_text(url), tags_to_search)
 
     def grap_needed_html_data(self, html_text: str, tags_to_search=None):
         """Grap data by regex patterns. (Without Beautiful Soup).
@@ -23,7 +27,8 @@ class WebPagesParser:
         parsed_data = re.findall(self._combined_text_regex, html_text)
         return parsed_data
 
-    def grap_needed_html_data_beautifulsoup(self, html_text: str, tags_to_search=None):
+    def grap_needed_html_data_beautifulsoup(self, html_text: str,
+                                            tags_to_search=None):
         blacklist = [
             '[document]',
             'noscript',
@@ -37,7 +42,8 @@ class WebPagesParser:
             'br',
         ]
         bf_soup = BeautifulSoup(html_text, 'html.parser')
-        data = [str(tag) for tag in bf_soup.findAll(tags_to_search) if tag.parent.name not in blacklist]
+        data = [str(tag) for tag in bf_soup.findAll(tags_to_search)
+                if tag.parent.name not in blacklist]
         return data
 
     def set_regex_by_settings(self, tags_to_search):
